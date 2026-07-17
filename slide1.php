@@ -1,0 +1,410 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:wght@500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+#slide1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('foto/wow.png') no-repeat center center / cover;
+    font-family: 'Lato', sans-serif;
+}
+#slide1 .scene {
+    position: relative;
+    width: min(100vw, calc(100vh * 9/16));
+    height: min(100vh, calc(100vw * 16/9));
+    max-width: 480px;
+    max-height: 100vh;
+    overflow: hidden;
+}
+#slide1 .soft-overlay {
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+    width: 72%;
+    height: 62%;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 58%, transparent 80%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ====== Posisi konten dipetakan presisi ke pusat oval background (≈47% tinggi) ====== */
+#slide1 .oval-content {
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+    width: 66%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+    z-index: 2;
+}
+
+/* ====== Flourish emas kecil di atas label ====== */
+#slide1 .top-flourish {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #D4AF37;
+    font-size: clamp(9px, 2vw, 11px);
+    opacity: 0;
+    margin-bottom: 6px;
+}
+#slide1.in-view .top-flourish {
+    animation: fadeIn1 0.8s 0s both;
+}
+#slide1 .top-flourish::before, #slide1 .top-flourish::after {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+}
+
+/* ====== Label "JOIN US FOR" style: serif kapital tipis, jarak huruf lebar ====== */
+#slide1 .label-top {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: clamp(10px, 2.3vw, 12.5px);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #A8285A;
+    opacity: 0;
+    margin-bottom: 4px;
+}
+#slide1.in-view .label-top {
+    animation: fadeIn1 0.8s 0.08s both;
+}
+
+/* ====== ONEDERFUL — kata utama, font script kuas mirip "Fairy First" ====== */
+#slide1 .onederful {
+    font-family: 'Alex Brush', cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: clamp(46px, 13.5vw, 74px);
+    line-height: 1;
+    background: linear-gradient(120deg, #A8285A 0%, #e91e8c 25%, #ffdf8a 48%, #D4AF37 62%, #e91e8c 85%, #A8285A 100%);
+    background-size: 260% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 3px 10px rgba(168,40,90,0.32));
+    opacity: 0;
+    position: relative;
+    margin-top: 4px;
+}
+#slide1.in-view .onederful {
+    animation:
+        popIn1 0.9s 0.18s cubic-bezier(.22,1,.36,1) forwards,
+        shineOne1 6s 1.15s linear infinite;
+}
+@keyframes shineOne1 {
+    0%   { background-position: 0% center; }
+    100% { background-position: 260% center; }
+}
+#slide1 .onederful .star-deco {
+    position: absolute;
+    font-size: 0.22em;
+    color: #D4AF37;
+    -webkit-text-fill-color: #D4AF37;
+    filter: drop-shadow(0 1px 3px rgba(212,175,55,0.5));
+    animation: floatStar1 2.6s ease-in-out infinite;
+}
+#slide1 .onederful .star-deco.left  { top: 2%; left: -8%; animation-delay: 0s; }
+#slide1 .onederful .star-deco.right { top: 6%; right: -6%; animation-delay: 1s; }
+@keyframes floatStar1 {
+    0%,100% { transform: translateY(0) rotate(-8deg) scale(1); opacity:0.75; }
+    50%      { transform: translateY(-5px) rotate(10deg) scale(1.15); opacity:1; }
+}
+
+/* ====== "BIRTHDAY" style: serif kapital tegas, jarak huruf lebar ====== */
+#slide1 .birthday-caps {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: clamp(17px, 4.6vw, 24px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #c2185b;
+    margin-top: 2px;
+    opacity: 0;
+}
+#slide1.in-view .birthday-caps {
+    animation: fadeIn1 0.9s 0.3s both;
+}
+
+/* ====== Badge "1st Birthday" bergaya medali emas ====== */
+#slide1 .badge-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    opacity: 0;
+}
+#slide1.in-view .badge-row {
+    animation: popIn1 0.8s 0.42s cubic-bezier(.22,1,.36,1) both;
+}
+#slide1 .medal {
+    width: clamp(18px, 4.6vw, 24px);
+    height: clamp(18px, 4.6vw, 24px);
+    border-radius: 50%;
+    background: linear-gradient(150deg, #f4d374, #D4AF37 55%, #b8892b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(184,137,43,0.5), inset 0 1px 1px rgba(255,255,255,0.6);
+    flex-shrink: 0;
+}
+#slide1 .medal span {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(8px, 2vw, 10px);
+    color: #fff;
+}
+#slide1 .number-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 14px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #A8285A, #e91e8c);
+    box-shadow: 0 4px 14px rgba(168,40,90,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+#slide1 .number-badge span {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: clamp(9.5px, 2.3vw, 11.5px);
+    letter-spacing: 1.5px;
+    color: #fff;
+    text-transform: uppercase;
+}
+@keyframes popIn1 {
+    from { opacity: 0; transform: scale(0.7); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeIn1 {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ====== Pembatas ganda gaya medali sebelum nama ====== */
+#slide1 .ornament {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 10px;
+    color: #D4AF37;
+    opacity: 0;
+    width: 74%;
+}
+#slide1.in-view .ornament {
+    animation: fadeIn1 0.9s 0.54s both;
+}
+#slide1 .ornament .ln-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+#slide1 .ornament .ln-group .ln {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #D4AF37bb);
+}
+#slide1 .ornament .ln-group.r .ln {
+    background: linear-gradient(90deg, #D4AF37bb, transparent);
+}
+#slide1 .ornament .ln-group .ln.thin { opacity: 0.5; }
+#slide1 .ornament-icon {
+    font-size: 15px;
+    line-height: 1;
+    animation: spinSlow1 7s linear infinite;
+    filter: drop-shadow(0 1px 2px rgba(212,175,55,0.4));
+}
+@keyframes spinSlow1 {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ====== Nama style: serif kapital elegan mirip "SOPHIA'S" ====== */
+#slide1 .name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: clamp(19px, 5.6vw, 28px);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #A8285A;
+    line-height: 1.35;
+    opacity: 0;
+}
+#slide1.in-view .name {
+    animation: slideUp1 0.9s 0.6s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes slideUp1 {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+#slide1 .date {
+    margin-top: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: clamp(10.5px, 2.6vw, 13.5px);
+    letter-spacing: 1.5px;
+    color: #A8285A;
+    opacity: 0;
+}
+#slide1.in-view .date {
+    animation: slideUp1 0.9s 0.72s cubic-bezier(.22,1,.36,1) both;
+}
+#slide1 .date::before, #slide1 .date::after {
+    content: '✧';
+    font-size: 9px;
+    margin: 0 8px;
+    color: #D4AF37;
+    vertical-align: middle;
+}
+
+/* ====== Bintang berkelip bertema wonderland ====== */
+#slide1 .sparkle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle1 var(--d) ease-in-out infinite var(--dl);
+    pointer-events: none;
+    z-index: 1;
+}
+@keyframes twinkle1 {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50%       { opacity: 0.8; transform: scale(1.3); }
+}
+#slide1 .mini-star {
+    position: absolute;
+    font-size: clamp(10px, 2.6vw, 15px);
+    color: #D4AF37;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 1px 2px rgba(212,175,55,0.4));
+    animation: twinkleStar1 var(--d,3s) ease-in-out infinite var(--dl,0s);
+}
+@keyframes twinkleStar1 {
+    0%,100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
+    50%      { opacity: 0.9; transform: scale(1.2) rotate(20deg); }
+}
+
+#slide1 .butterfly {
+    position: absolute;
+    pointer-events: none;
+    width: clamp(16px, 4vw, 23px);
+    height: clamp(16px, 4vw, 23px);
+    opacity: 0.85;
+    animation: flutterFloat1 var(--fd, 6s) ease-in-out infinite var(--fdl, 0s);
+    z-index: 3;
+}
+#slide1 .butterfly svg { width: 100%; height: 100%; display: block; }
+#slide1 .butterfly .wing { transform-origin: center; animation: wingFlap1 0.45s ease-in-out infinite alternate; }
+#slide1 .butterfly .wing-right { animation-delay: 0.05s; }
+@keyframes wingFlap1 {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0.55); }
+}
+@keyframes flutterFloat1 {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    25%  { transform: translate(8px,-14px) rotate(6deg); }
+    50%  { transform: translate(-4px,-26px) rotate(-4deg); }
+    75%  { transform: translate(-10px,-12px) rotate(5deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+    #slide1 .onederful, #slide1 .badge-row, #slide1 .name, #slide1 .date, #slide1 .sparkle, #slide1 .mini-star, #slide1 .label-top, #slide1 .birthday-caps, #slide1 .top-flourish, #slide1 .ornament, #slide1 .butterfly, #slide1 .butterfly .wing, #slide1 .ornament-icon, #slide1 .onederful .star-deco { animation: none; opacity: 1; }
+}
+</style>
+
+<div class="scene" id="scene1">
+
+    <div class="soft-overlay"></div>
+
+    <!-- Konten dalam oval, dipetakan presisi ke pusat frame background -->
+    <div class="oval-content">
+
+        <div class="top-flourish"></div>
+
+        <div class="onederful">
+            <span class="star-deco left">✦</span>
+            Onederful
+            <span class="star-deco right">✦</span>
+        </div>
+
+        <div class="badge-row">
+            <div class="number-badge"><span>Birthday</span></div>
+        </div>
+
+        <div class="ornament">
+            <span class="ln-group"><span class="ln"></span><span class="ln thin"></span></span>
+            <span class="ornament-icon">✦</span>
+            <span class="ln-group r"><span class="ln"></span><span class="ln thin"></span></span>
+        </div>
+
+        <h1 class="name">Fidela Faelynn<br>Fedriek</h1>
+        <p class="date">Kamis, 30 July 2026</p>
+    </div>
+
+    <!-- Bintang kecil bertaburan -->
+    <div class="mini-star" style="top:15%; left:15%; --d:3.2s; --dl:0.2s;">★</div>
+    <div class="mini-star" style="top:21%; right:13%; --d:2.8s; --dl:1s;">✦</div>
+    <div class="mini-star" style="bottom:20%; left:11%; --d:3.4s; --dl:1.6s;">✧</div>
+    <div class="mini-star" style="bottom:14%; right:16%; --d:3s; --dl:0.6s;">★</div>
+
+    <!-- Kupu-kupu melayang -->
+    <div class="butterfly" style="top:10%; left:8%; --fd:5.6s; --fdl:0s;">
+        <svg viewBox="0 0 32 32">
+            <g class="wing wing-left"><path d="M16 16 C8 4,0 6,2 14 C3 20,10 20,16 16 Z" fill="#f06292"/></g>
+            <g class="wing wing-right"><path d="M16 16 C24 4,32 6,30 14 C29 20,22 20,16 16 Z" fill="#f48fb1"/></g>
+            <g class="wing wing-left"><path d="M16 16 C10 22,4 24,6 28 C9 31,14 26,16 16 Z" fill="#e91e8c" opacity="0.85"/></g>
+            <g class="wing wing-right"><path d="M16 16 C22 22,28 24,26 28 C23 31,18 26,16 16 Z" fill="#f06292" opacity="0.85"/></g>
+            <line x1="16" y1="10" x2="16" y2="24" stroke="#c2185b" stroke-width="1.5"/>
+        </svg>
+    </div>
+    <div class="butterfly" style="top:17%; right:7%; --fd:6.8s; --fdl:1.1s;">
+        <svg viewBox="0 0 32 32">
+            <g class="wing wing-left"><path d="M16 16 C8 4,0 6,2 14 C3 20,10 20,16 16 Z" fill="#D4AF37"/></g>
+            <g class="wing wing-right"><path d="M16 16 C24 4,32 6,30 14 C29 20,22 20,16 16 Z" fill="#f48fb1"/></g>
+            <g class="wing wing-left"><path d="M16 16 C10 22,4 24,6 28 C9 31,14 26,16 16 Z" fill="#e91e8c" opacity="0.85"/></g>
+            <g class="wing wing-right"><path d="M16 16 C22 22,28 24,26 28 C23 31,18 26,16 16 Z" fill="#f06292" opacity="0.85"/></g>
+            <line x1="16" y1="10" x2="16" y2="24" stroke="#c2185b" stroke-width="1.5"/>
+        </svg>
+    </div>
+    <div class="butterfly" style="bottom:19%; left:10%; --fd:7.2s; --fdl:0.6s;">
+        <svg viewBox="0 0 32 32">
+            <g class="wing wing-left"><path d="M16 16 C8 4,0 6,2 14 C3 20,10 20,16 16 Z" fill="#f48fb1"/></g>
+            <g class="wing wing-right"><path d="M16 16 C24 4,32 6,30 14 C29 20,22 20,16 16 Z" fill="#e91e8c"/></g>
+            <g class="wing wing-left"><path d="M16 16 C10 22,4 24,6 28 C9 31,14 26,16 16 Z" fill="#f06292" opacity="0.85"/></g>
+            <g class="wing wing-right"><path d="M16 16 C22 22,28 24,26 28 C23 31,18 26,16 16 Z" fill="#D4AF37" opacity="0.85"/></g>
+            <line x1="16" y1="10" x2="16" y2="24" stroke="#c2185b" stroke-width="1.5"/>
+        </svg>
+    </div>
+
+</div>
+
+<script>
+    const scene = document.getElementById('scene1');
+    const sparklePositions = [
+        {top:'19%',left:'27%',c:'#D4AF37'},{top:'23%',left:'70%',c:'#f48fb1'},
+        {top:'32%',left:'19%',c:'#f48fb1'},{top:'32%',left:'80%',c:'#D4AF37'},
+        {top:'70%',left:'16%',c:'#D4AF37'},{top:'73%',left:'82%',c:'#f48fb1'},
+        {top:'80%',left:'26%',c:'#f48fb1'},{top:'78%',left:'72%',c:'#D4AF37'},
+    ];
+    sparklePositions.forEach((pos, i) => {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        const size = 4 + Math.random()*3;
+        s.style.cssText = `top:${pos.top};left:${pos.left};width:${size}px;height:${size}px;background:${pos.c};--d:${2+Math.random()*2}s;--dl:${i*0.35}s`;
+        scene.appendChild(s);
+    });
+</script>

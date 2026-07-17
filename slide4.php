@@ -1,0 +1,278 @@
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+#slide4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('foto/slide5.png') no-repeat center center / cover;
+    font-family: 'Nunito', sans-serif;
+}
+#slide4 .scene {
+    position: relative;
+    width: min(100vw, calc(100vh * 9/16));
+    height: min(100vh, calc(100vw * 16/9));
+    max-width: 560px;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+#slide4 .frame-content {
+    position: absolute;
+    top: 20%;
+    left: 9%;
+    right: 9%;
+    bottom: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    z-index: 3;
+}
+
+/* ====== Judul: diam sampai slide masuk viewport ====== */
+#slide4 .title {
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+    font-size: clamp(30px, 6.2vw, 48px);
+    line-height: 1.15;
+    color: #ad1457;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    opacity: 0;
+}
+#slide4.in-view .title {
+    animation: popIn4 0.9s 0.08s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes popIn4 {
+    from { opacity:0; transform:translateY(-6px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+
+#slide4 .subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: clamp(8px, 1.9vw, 10px);
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    color: #b06a8a;
+    margin-top: 5px;
+    flex-shrink: 0;
+    opacity: 0;
+}
+#slide4.in-view .subtitle {
+    animation: popIn4 0.9s 0.16s cubic-bezier(.22,1,.36,1) both;
+}
+
+#slide4 .divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 46%;
+    margin: 10px 0 16px;
+    flex-shrink: 0;
+    opacity: 0;
+}
+#slide4.in-view .divider {
+    animation: popIn4 0.9s 0.24s cubic-bezier(.22,1,.36,1) both;
+}
+#slide4 .divider .ln { flex:1; height:1px; background: linear-gradient(90deg, transparent, #e9a4c6); }
+#slide4 .divider .ln.r { background: linear-gradient(90deg, #e9a4c6, transparent); }
+#slide4 .divider .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #e91e8c; flex-shrink: 0;
+}
+
+/* ====== Grid 2 x 2 ====== */
+#slide4 .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: clamp(10px, 2.6vw, 16px);
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    perspective: 900px;
+}
+
+/* ====== Foto: diam sampai slide masuk viewport, lalu jatuh + melayang ====== */
+#slide4 .photo-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow:
+        0 0 0 1px #f3c3d6,
+        0 8px 20px rgba(173,58,115,0.22);
+    min-height: 0;
+    cursor: pointer;
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease;
+    will-change: transform;
+}
+#slide4.in-view .photo-item {
+    animation:
+        dropIn4 1.1s calc(var(--i,0) * 0.16s + 0.15s) cubic-bezier(.16,.84,.32,1) forwards,
+        float4 4.5s calc(var(--i,0) * 0.3s + 1.25s) ease-in-out infinite;
+}
+
+#slide4 .photo-item:nth-child(1) { --rot: -3deg; }
+#slide4 .photo-item:nth-child(2) { --rot: 2deg; }
+#slide4 .photo-item:nth-child(3) { --rot: 2deg; }
+#slide4 .photo-item:nth-child(4) { --rot: -3deg; }
+
+@keyframes dropIn4 {
+    0%   { opacity:0; transform: translateY(-34px) scale(0.9) rotate(0deg); }
+    100% { opacity:1; transform: translateY(0) scale(1) rotate(var(--rot)); }
+}
+
+@keyframes float4 {
+    0%, 100% { transform: translateY(0) rotate(var(--rot)); }
+    50%      { transform: translateY(-9px) rotate(calc(var(--rot) * -1)); }
+}
+
+#slide4 .photo-item:hover,
+#slide4 .photo-item:active {
+    animation-play-state: paused;
+    transform: translateY(-6px) scale(1.08) rotate(0deg) !important;
+    box-shadow:
+        0 0 0 1px #f3c3d6,
+        0 16px 30px rgba(173,58,115,0.38);
+    z-index: 5;
+}
+
+#slide4 .photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+#slide4 .photo-item:hover img,
+#slide4 .photo-item:active img {
+    transform: scale(1.12);
+}
+
+/* ====== Kupu-kupu terbang (ambient, tetap jalan) ====== */
+#slide4 .butterflies {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+}
+#slide4 .butterfly {
+    position: absolute;
+    transform-origin: center;
+}
+#slide4 .butterfly svg { display:block; overflow: visible; }
+#slide4 .wing {
+    transform-origin: 10px 10px;
+    animation: flap 0.5s ease-in-out infinite alternate;
+}
+#slide4 .wing.left { animation-delay: 0s; }
+#slide4 .wing.right { animation-delay: 0s; }
+@keyframes flap {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0.35); }
+}
+
+#slide4 .b1 { top: 14%; left: 6%; animation: fly1 9s ease-in-out infinite; }
+#slide4 .b2 { top: 10%; right: 8%; animation: fly2 11s ease-in-out infinite; }
+#slide4 .b3 { bottom: 8%; left: 12%; animation: fly3 10s ease-in-out infinite; }
+#slide4 .b4 { bottom: 14%; right: 10%; animation: fly4 12s ease-in-out infinite; }
+
+@keyframes fly1 {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    25%  { transform: translate(30px,-18px) rotate(8deg); }
+    50%  { transform: translate(60px,4px) rotate(-4deg); }
+    75%  { transform: translate(28px,22px) rotate(6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+@keyframes fly2 {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    25%  { transform: translate(-26px,20px) rotate(-10deg); }
+    50%  { transform: translate(-50px,-6px) rotate(6deg); }
+    75%  { transform: translate(-22px,-24px) rotate(-6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+@keyframes fly3 {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    30%  { transform: translate(24px,-22px) rotate(10deg); }
+    60%  { transform: translate(46px,2px) rotate(-6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+@keyframes fly4 {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    30%  { transform: translate(-22px,-16px) rotate(-8deg); }
+    60%  { transform: translate(-40px,10px) rotate(6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #slide4 .title, #slide4 .subtitle, #slide4 .divider, #slide4 .photo-item, #slide4 .butterfly, #slide4 .wing {
+        animation: none !important; opacity:1; transform:none !important;
+    }
+}
+</style>
+
+<div id="slide4">
+<div class="scene" id="scene4">
+
+    <div class="butterflies">
+        <div class="butterfly b1">
+            <svg width="22" height="20" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#e91e8c" opacity="0.85"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#f48fb1" opacity="0.85"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+        <div class="butterfly b2">
+            <svg width="18" height="16" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#D4AF37" opacity="0.8"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#f8c6de" opacity="0.85"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+        <div class="butterfly b3">
+            <svg width="20" height="18" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#f48fb1" opacity="0.85"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#e91e8c" opacity="0.85"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+        <div class="butterfly b4">
+            <svg width="16" height="14" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#f8c6de" opacity="0.85"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#D4AF37" opacity="0.8"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="frame-content">
+
+        <h1 class="title">Galeri Photo</h1>
+        <p class="subtitle">Kumpulan Momen Indah Kami</p>
+        <div class="divider"><span class="ln"></span><span class="dot"></span><span class="ln r"></span></div>
+
+        <div class="gallery">
+            <div class="photo-item" style="--i:0">
+                <img src="foto/5-tanda-bayi-sehat-dan-perkembangan-tubuhnya-normal-id-id.jpg" alt="Foto 1">
+            </div>
+            <div class="photo-item" style="--i:1">
+                <img src="foto/5-tanda-bayi-sehat-dan-perkembangan-tubuhnya-normal-id-id.jpg" alt="Foto 2">
+            </div>
+            <div class="photo-item" style="--i:2">
+                <img src="foto/5-tanda-bayi-sehat-dan-perkembangan-tubuhnya-normal-id-id.jpg" alt="Foto 3">
+            </div>
+            <div class="photo-item" style="--i:3">
+                <img src="foto/5-tanda-bayi-sehat-dan-perkembangan-tubuhnya-normal-id-id.jpg" alt="Foto 4">
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

@@ -1,0 +1,333 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+#slide2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('foto/ganti.png') no-repeat center center / cover;
+            font-family: 'Lato', sans-serif;
+        }
+#slide2 .scene {
+            position: relative;
+            width: min(100vw, calc(100vh * 9/16));
+            height: min(100vh, calc(100vw * 16/9));
+            max-width: 560px;
+            max-height: 100vh;
+        }
+
+/* ====== Kotak konten dipetakan presisi ke frame lengkung background ====== */
+#slide2 .frame-content {
+            position: absolute;
+            top: 4.5%;
+            left: 13.5%;
+            right: 11%;
+            bottom: 11.5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 0;
+            overflow: hidden;
+        }
+
+#slide2 .salam {
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+            font-size: clamp(30px, 7vw, 38px);
+            background: linear-gradient(135deg, #c2185b 20%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 3px;
+            filter: drop-shadow(0 1px 3px rgba(194,24,91,0.15));
+            opacity: 0;
+        }
+#slide2.in-view .salam {
+            animation: fadeUpIn2 1.1s 0.15s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+@keyframes fadeUpIn2 {
+            from { opacity:0; transform: translateY(14px); }
+            to   { opacity:1; transform: translateY(0); }
+        }
+
+#slide2 .salam-sub {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: clamp(7.5px, 1.9vw, 9.5px);
+            letter-spacing: 2.4px;
+            text-transform: uppercase;
+            color: #b06a8a;
+            margin-bottom: 10px;
+            opacity: 0;
+        }
+#slide2.in-view .salam-sub {
+            animation: fadeUpIn2 1.1s 0.28s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+
+#slide2 .mini-divider {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 36%;
+            margin: 0 auto 12px;
+            opacity: 0;
+        }
+#slide2.in-view .mini-divider {
+            animation: fadeUpIn2 1.1s 0.4s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+#slide2 .mini-divider .ln { flex:1; height:1px; background: linear-gradient(90deg, transparent, #f48fb1bb); }
+#slide2 .mini-divider .ln.r { background: linear-gradient(90deg, #f48fb1bb, transparent); }
+#slide2 .mini-divider .dot { width:4px; height:4px; border-radius:50%; background:#e91e8c; flex-shrink:0; }
+
+#slide2 .undangan {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: clamp(10.5px, 2.7vw, 13.5px);
+            color: #5d2a42;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            opacity: 0;
+}
+#slide2.in-view .undangan {
+            animation: fadeUpIn2 1.15s 0.52s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+#slide2 .undangan strong {
+            font-weight: 600;
+            color: #c2185b;
+            display: inline-block;
+            margin-top: 3px;
+            letter-spacing: 0.3px;
+        }
+
+#slide2 .polaroid-wrap {
+            position: relative;
+            margin: 4px auto 10px;
+            flex-shrink: 0;
+            transform: rotate(-3deg);
+            opacity: 0;
+            width: clamp(118px, 32vw, 168px);
+        }
+#slide2.in-view .polaroid-wrap {
+            animation: polaroidIn2 1.3s 0.72s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+@keyframes polaroidIn2 {
+            from { opacity:0; transform: rotate(-3deg) translateY(22px) scale(0.9); }
+            to   { opacity:1; transform: rotate(-3deg) translateY(0) scale(1); }
+        }
+#slide2 .polaroid {
+            background: #fff;
+            border-radius: 5px;
+            padding: clamp(6px,1.6vw,9px) clamp(6px,1.6vw,9px) clamp(16px,4.4vw,22px);
+            box-shadow:
+                0 5px 0 #e8a0c0,
+                0 9px 22px rgba(233,30,140,0.22),
+                0 2px 8px rgba(0,0,0,0.12);
+        }
+#slide2 .polaroid-photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 3px;
+            background: #fce4ec;
+        }
+#slide2 .polaroid-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+#slide2 .ribbon {
+            position: absolute;
+            top: clamp(-11px,-2.6vw,-6px);
+            left: 50%;
+            transform: translateX(-50%) rotate(8deg);
+            width: clamp(40px,11vw,58px);
+            height: clamp(16px,4.4vw,24px);
+            background: repeating-linear-gradient(
+                45deg,
+                #f8bbd0,
+                #f8bbd0 4px,
+                #fff 4px,
+                #fff 8px
+            );
+            border: 1.5px solid #f48fb1;
+            border-radius: 3px;
+            box-shadow: 0 2px 6px rgba(233,30,140,0.2);
+            z-index: 2;
+        }
+#slide2 .pol-emoji {
+            position: absolute;
+            font-size: clamp(12px,3vw,16px);
+            animation: floatE2 2.5s ease-in-out infinite;
+            line-height: 1;
+            z-index: 3;
+        }
+#slide2 .pe-tl { top: -8px;  left: -10px; animation-delay: 0s; }
+#slide2 .pe-br { bottom: clamp(14px,4vw,20px); right: -10px; animation-delay: 1.2s; }
+@keyframes floatE2 {
+            0%,100% { transform: scale(1) translateY(0); }
+            50%      { transform: scale(1.2) translateY(-4px); }
+        }
+
+#slide2 .name {
+             font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: clamp(10px, 5.8vw, 15px);
+            background: linear-gradient(135deg, #c2185b 10%, #e91e8c 55%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15;
+            filter: drop-shadow(0 2px 6px rgba(194,24,91,0.18));
+            opacity: 0;
+            margin-top: 2px;
+        }
+#slide2.in-view .name {
+            animation: fadeUpIn2 1.1s 1.05s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+
+#slide2 .name-ornament {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            width: 55%;
+            margin: 7px auto 8px;
+            opacity: 0;
+        }
+#slide2.in-view .name-ornament {
+            animation: fadeUpIn2 1s 1.2s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+#slide2 .name-ornament::before, #slide2 .name-ornament::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+        }
+#slide2 .name-ornament::before { background: linear-gradient(90deg, transparent, #f48fb1bb); }
+#slide2 .name-ornament::after { background: linear-gradient(90deg, #f48fb1bb, transparent); }
+#slide2 .no-icon { font-size: 13px; color: #e91e8c; animation: spin2 5s linear infinite; }
+@keyframes spin2 { to { transform: rotate(360deg); } }
+
+/* ====== Blok keterangan orang tua & kakak: rapi, sejajar, font Poppins ====== */
+#slide2 .family-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            opacity: 0;
+}
+#slide2.in-view .family-block.parents {
+            animation: fadeUpIn2 1.1s 1.32s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+#slide2 .family-divider {
+            width: 32%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #f48fb188, transparent);
+            margin: 9px 0;
+            opacity: 0;
+}
+#slide2.in-view .family-divider {
+            animation: fadeUpIn2 1s 1.48s cubic-bezier(.16,.84,.32,1) forwards;
+}
+#slide2.in-view .family-block.sibling {
+            animation: fadeUpIn2 1.1s 1.6s cubic-bezier(.16,.84,.32,1) forwards;
+        }
+#slide2 .family-label {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: clamp(10px, 2.6vw, 13px);
+            color: #6d3b5e;
+            letter-spacing: 0.3px;
+}
+#slide2 .family-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: clamp(10.5px, 2.7vw, 13.5px);
+            color: #8e4476;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+            margin-top: 1px;
+}
+#slide2 .sparkle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: twinkle2 var(--d,3s) ease-in-out infinite var(--dl,0s);
+        }
+@keyframes twinkle2 {
+            0%,100% { opacity:0; transform:scale(0.4); }
+            50%      { opacity:0.8; transform:scale(1.4); }
+        }
+@media (prefers-reduced-motion: reduce) { #slide2 .salam, #slide2 .salam-sub, #slide2 .mini-divider, #slide2 .undangan, #slide2 .polaroid-wrap, #slide2 .pol-emoji, #slide2 .no-icon, #slide2 .name, #slide2 .name-ornament, #slide2 .family-block, #slide2 .family-divider, #slide2 .sparkle { animation:none; opacity:1; transform: none; } #slide2 .polaroid-wrap { transform: rotate(-3deg); } }
+</style>
+
+<div class="scene" id="scene2">
+    <div class="frame-content">
+
+        <!-- Salam umum, hangat, tanpa unsur agama tertentu -->
+        <p class="salam">Dengan Sukacita</p>
+        <div class="mini-divider"><span class="ln"></span><span class="dot"></span><span class="ln r"></span></div>
+
+        <!-- Teks undangan -->
+        <p class="undangan">
+            Dengan penuh rasa syukur dan bahagia,<br>
+            kami mengundang Bapak/Ibu/Saudara/i<br>
+            untuk hadir dan berbagi kebahagiaan<br>
+            pada acara<br>
+            <strong>Ulang Tahun Putri kami tercinta</strong>
+        </p>
+
+        <!-- Polaroid foto -->
+        <div class="polaroid-wrap">
+            <div class="polaroid">
+                <div class="polaroid-photo">
+                    <img src="foto/5-tanda-bayi-sehat-dan-perkembangan-tubuhnya-normal-id-id.jpg" alt="Foto Faelyn">
+                </div>
+            </div>
+        </div>
+
+        <!-- Nama besar -->
+        <h1 class="name">Fidela Faelynn Fedriek</h1>
+
+        <!-- Ornamen -->
+        <div class="name-ornament"><span class="no-icon">✿</span></div>
+
+        <!-- Orang tua -->
+        <div class="family-block parents">
+            <p class="family-label">Putri Dari</p>
+            <p class="family-name">Bpk Stefanus Fedriek &amp; Ibu Vina Kurniadi</p>
+        </div>
+
+        <div class="family-divider"></div>
+
+        <!-- Kakak -->
+        <div class="family-block sibling">
+            <p class="family-label">Kakak Tercinta</p>
+            <p class="family-name">Fabianus Fernandes Fedriek</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const scene = document.getElementById('scene2');
+    [
+        {t:'8%', l:'7%', s:5, c:'#f48fb1'},
+        {t:'10%',l:'85%',s:4, c:'#D4AF37'},
+        {t:'4%', l:'48%',s:3, c:'#fff'},
+        {t:'90%',l:'10%',s:4, c:'#f48fb1'},
+        {t:'88%',l:'78%',s:5, c:'#D4AF37'},
+        {t:'50%',l:'3%', s:3, c:'#fff'},
+        {t:'52%',l:'93%',s:4, c:'#f48fb1'},
+    ].forEach((p,i) => {
+        const el = document.createElement('div');
+        el.className = 'sparkle';
+        el.style.cssText = `top:${p.t};left:${p.l};width:${p.s}px;height:${p.s}px;background:${p.c};--d:${2+Math.random()*2.5}s;--dl:${i*0.38}s`;
+        scene.appendChild(el);
+    });
+</script>

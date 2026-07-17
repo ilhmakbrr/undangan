@@ -1,0 +1,477 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;1,400;1,500&display=swap');
+
+
+#slide3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('foto/sip.png') no-repeat center center / cover;
+    font-family: 'Poppins', sans-serif;
+}
+#slide3 .scene {
+    position: relative;
+    width: min(100vw, calc(100vh * 9/16));
+    height: min(100vh, calc(100vw * 16/9));
+    max-width: 560px;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+#slide3 .frame-content {
+    position: absolute;
+    top: 31%;
+    left: 15%;
+    right: 15%;
+    bottom: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 3;
+}
+
+@keyframes fadeUpIn3 {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:1; transform: translateY(0); }
+}
+
+/* ====== Countdown: diam sampai slide masuk viewport ====== */
+#slide3 .countdown-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 18%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 4;
+    opacity: 0;
+}
+#slide3.in-view .countdown-wrap {
+    animation: fadeUpIn3 1s 1.6s cubic-bezier(.16,.84,.32,1) forwards;
+}
+#slide3 .countdown {
+    display: flex;
+    justify-content: center;
+}
+#slide3 .cd-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255,255,255,0.75);
+    border-radius: 8px;
+    padding: clamp(4px,1.2vw,6px) clamp(7px,2vw,10px);
+    min-width: clamp(34px, 9vw, 44px);
+    box-shadow: 0 4px 12px rgba(173,20,87,0.15);
+}
+#slide3 .cd-num {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(15px, 4vw, 19px);
+    color: #ad1457;
+    line-height: 1;
+    transition: transform 0.25s ease;
+}
+#slide3 .cd-num.tick { animation: tickPulse3 0.4s ease; }
+@keyframes tickPulse3 {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+#slide3 .cd-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(6.5px, 1.5vw, 8px);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #b06a8a;
+    margin-top: 2px;
+}
+
+/* ====== Tanggal ====== */
+#slide3 .date-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    opacity: 0;
+}
+#slide3.in-view .date-line {
+    animation: fadeUpIn3 1s 0.05s cubic-bezier(.16,.84,.32,1) forwards;
+}
+#slide3 .date-day {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: clamp(20px, 5.2vw, 26px);
+    color: #ad1457;
+    line-height: 1;
+}
+#slide3 .date-month {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: clamp(9px, 2.1vw, 11px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #b06a8a;
+}
+
+/* ====== Judul ====== */
+#slide3 .title {
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+    font-size: clamp(30px, 6.2vw, 40px);
+    line-height: 1.15;
+    color: #ad1457;
+    letter-spacing: 0.5px;
+    opacity: 0;
+}
+#slide3.in-view .title {
+    animation: fadeUpIn3 1.1s 0.25s cubic-bezier(.16,.84,.32,1) forwards;
+}
+#slide3 .subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: clamp(8px, 1.9vw, 10px);
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    color: #b06a8a;
+    margin-top: 5px;
+    opacity: 0;
+}
+#slide3.in-view .subtitle {
+    animation: fadeUpIn3 1.1s 0.42s cubic-bezier(.16,.84,.32,1) forwards;
+}
+
+/* ====== Garis pembatas atas ====== */
+#slide3 .top-divider {
+    width: 40px;
+    height: 1px;
+    background: #c2185b;
+    opacity: 0;
+    margin: 14px 0 18px;
+}
+#slide3.in-view .top-divider {
+    animation: fadeUpIn3top 1s 0.58s cubic-bezier(.16,.84,.32,1) forwards;
+}
+@keyframes fadeUpIn3top {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:0.4; transform: translateY(0); }
+}
+
+/* ====== Daftar detail ====== */
+#slide3 .detail-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+#slide3 .detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    padding: clamp(10px, 2.4vw, 14px) 2px;
+    border-bottom: 1px solid rgba(194,24,91,0.18);
+    opacity: 0;
+}
+#slide3.in-view .detail-item:nth-child(1) { animation: fadeUpIn3 1s 0.75s cubic-bezier(.16,.84,.32,1) forwards; }
+#slide3.in-view .detail-item:nth-child(2) { animation: fadeUpIn3 1s 0.92s cubic-bezier(.16,.84,.32,1) forwards; }
+#slide3.in-view .detail-item:nth-child(3) { animation: fadeUpIn3 1s 1.09s cubic-bezier(.16,.84,.32,1) forwards; }
+#slide3 .detail-item:last-child {
+    border-bottom: none;
+}
+#slide3 .detail-ico {
+    font-size: clamp(13px, 3vw, 16px);
+    flex-shrink: 0;
+    width: clamp(18px, 4vw, 22px);
+    text-align: center;
+    margin-top: 1px;
+    opacity: 0.85;
+}
+#slide3 .detail-text { flex: 1; min-width: 0; }
+#slide3 .detail-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(7.5px, 1.8vw, 9.5px);
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #b06a8a;
+}
+#slide3 .detail-value {
+    font-family: 'Poppins', sans-serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(12px, 2.8vw, 15px);
+    color: #4a1a30;
+    line-height: 1.3;
+    margin-top: 2px;
+}
+#slide3 .detail-sub {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: clamp(8.5px, 1.9vw, 10.5px);
+    color: #8a5a72;
+    margin-top: 2px;
+    line-height: 1.35;
+}
+
+/* ====== Tombol ====== */
+#slide3 .btn-maps {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: clamp(19px,2.6vw,18px);
+    margin-bottom: clamp(19px,2.6vw,18px);
+    padding: clamp(9px,2vw,11px) clamp(22px,5vw,28px);
+    background: #c2185b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(9px, 2.1vw, 11px);
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    box-shadow: 0 6px 16px rgba(194,24,91,0.28);
+    opacity: 0;
+}
+#slide3.in-view .btn-maps {
+    animation: fadeUpIn3 1.05s 1.3s cubic-bezier(.16,.84,.32,1) forwards;
+}
+#slide3 .btn-maps svg { width: clamp(11px,2.6vw,13px); height: clamp(11px,2.6vw,13px); fill: currentColor; }
+
+#slide3 .note {
+    margin-top: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(7.5px, 1.7vw, 9.5px);
+    color: #b06a8a;
+    opacity: 0;
+    letter-spacing: 0.5px;
+}
+#slide3.in-view .note {
+    animation: fadeUpIn3 1s 1.48s cubic-bezier(.16,.84,.32,1) forwards;
+}
+
+/* ====== Kupu-kupu terbang (ambient, tetap jalan) ====== */
+#slide3 .butterflies {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+#slide3 .butterfly {
+    position: absolute;
+    transform-origin: center;
+}
+#slide3 .butterfly svg { display:block; overflow: visible; }
+#slide3 .wing {
+    transform-origin: 10px 10px;
+    animation: flap3 0.5s ease-in-out infinite alternate;
+}
+@keyframes flap3 {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0.35); }
+}
+
+#slide3 .b1 { top: 24%; left: 7%;  animation: fly3a 9s ease-in-out infinite; }
+#slide3 .b2 { top: 20%; right: 8%; animation: fly3b 11s ease-in-out infinite; }
+#slide3 .b3 { bottom: 22%; left: 9%; animation: fly3c 10s ease-in-out infinite; }
+#slide3 .b4 { bottom: 18%; right: 7%; animation: fly3d 12s ease-in-out infinite; }
+
+@keyframes fly3a {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    25%  { transform: translate(26px,-16px) rotate(8deg); }
+    50%  { transform: translate(50px,4px) rotate(-4deg); }
+    75%  { transform: translate(22px,20px) rotate(6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+@keyframes fly3b {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    25%  { transform: translate(-22px,18px) rotate(-10deg); }
+    50%  { transform: translate(-44px,-6px) rotate(6deg); }
+    75%  { transform: translate(-18px,-20px) rotate(-6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+@keyframes fly3c {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    30%  { transform: translate(20px,-18px) rotate(10deg); }
+    60%  { transform: translate(38px,2px) rotate(-6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+@keyframes fly3d {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    30%  { transform: translate(-18px,-14px) rotate(-8deg); }
+    60%  { transform: translate(-34px,8px) rotate(6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #slide3 .date-line, #slide3 .title, #slide3 .subtitle, #slide3 .top-divider,
+    #slide3 .detail-item, #slide3 .btn-maps, #slide3 .note,
+    #slide3 .butterfly, #slide3 .wing, #slide3 .countdown-wrap { animation:none; opacity:1; transform:none; }
+    #slide3 .top-divider { opacity: 0.4; }
+}
+</style>
+
+<div id="slide3">
+<div class="scene" id="scene3">
+
+    <div class="butterflies">
+        <div class="butterfly b1">
+            <svg width="20" height="18" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#e91e8c" opacity="0.85"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#f48fb1" opacity="0.85"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+        <div class="butterfly b2">
+            <svg width="17" height="15" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#D4AF37" opacity="0.8"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#f8c6de" opacity="0.85"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+        <div class="butterfly b3">
+            <svg width="18" height="16" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#f48fb1" opacity="0.85"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#e91e8c" opacity="0.85"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+        <div class="butterfly b4">
+            <svg width="15" height="13" viewBox="0 0 20 20">
+                <g class="wing left"><path d="M10 10 C10 10 2 2 2 7 C2 12 8 12 10 10Z" fill="#f8c6de" opacity="0.85"/></g>
+                <g class="wing right"><path d="M10 10 C10 10 18 2 18 7 C18 12 12 12 10 10Z" fill="#D4AF37" opacity="0.8"/></g>
+                <line x1="10" y1="4" x2="10" y2="14" stroke="#ad1457" stroke-width="1"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="frame-content">
+        <h1 class="title">Waktu &amp; Tempat</h1>
+        <p class="subtitle">Mohon Kehadiran Anda</p>
+
+        <div class="top-divider"></div>
+
+        <div class="detail-list">
+
+            <div class="detail-item">
+                <span class="detail-ico">📅</span>
+                <div class="detail-text">
+                    <p class="detail-label">Hari &amp; Tanggal</p>
+                    <p class="detail-value">Kamis, 30 Juli 2026</p>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-ico">⏰</span>
+                <div class="detail-text">
+                    <p class="detail-label">Pukul</p>
+                    <p class="detail-value">18.00 WIB – Selesai</p>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-ico">📍</span>
+                <div class="detail-text">
+                    <p class="detail-label">Lokasi</p>
+                    <p class="detail-value">Hotel The 101 Palembang Rajawali</p>
+                    <p class="detail-sub">Lantai M — Grand Sapphire Ballroom</p>
+                </div>
+            </div>
+
+        </div>
+
+        <a href="https://maps.app.goo.gl/TCjMwLrFu519ppse8" target="_blank" class="btn-maps">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            Buka Google Maps
+        </a>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown-wrap">
+        <div class="countdown">
+            <div class="cd-box">
+                <span class="cd-num" id="cdDays">00</span>
+                <span class="cd-label">Hari</span>
+            </div>
+            <div class="cd-box">
+                <span class="cd-num" id="cdHours">00</span>
+                <span class="cd-label">Jam</span>
+            </div>
+            <div class="cd-box">
+                <span class="cd-num" id="cdMinutes">00</span>
+                <span class="cd-label">Menit</span>
+            </div>
+            <div class="cd-box">
+                <span class="cd-num" id="cdSeconds">00</span>
+                <span class="cd-label">Detik</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script>
+(function () {
+    // Ganti sesuai tanggal & jam acara sebenarnya
+    const targetDate = new Date('2026-07-30T18:00:00+07:00').getTime();
+
+    const elDays    = document.getElementById('cdDays');
+    const elHours   = document.getElementById('cdHours');
+    const elMinutes = document.getElementById('cdMinutes');
+    const elSeconds = document.getElementById('cdSeconds');
+
+    let prev = { d: null, h: null, m: null, s: null };
+
+    function pad(n) { return n.toString().padStart(2, '0'); }
+
+    function tickAnim(el, val, prevVal) {
+        if (val !== prevVal) {
+            el.classList.remove('tick');
+            void el.offsetWidth;
+            el.classList.add('tick');
+        }
+    }
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance <= 0) {
+            elDays.textContent = '00';
+            elHours.textContent = '00';
+            elMinutes.textContent = '00';
+            elSeconds.textContent = '00';
+            clearInterval(timer);
+            return;
+        }
+
+        const days    = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        tickAnim(elDays, days, prev.d);
+        tickAnim(elHours, hours, prev.h);
+        tickAnim(elMinutes, minutes, prev.m);
+        tickAnim(elSeconds, seconds, prev.s);
+
+        elDays.textContent = pad(days);
+        elHours.textContent = pad(hours);
+        elMinutes.textContent = pad(minutes);
+        elSeconds.textContent = pad(seconds);
+
+        prev = { d: days, h: hours, m: minutes, s: seconds };
+    }
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+})();
+</script>
