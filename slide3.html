@@ -421,57 +421,81 @@
 <script>
 (function () {
     // Ganti sesuai tanggal & jam acara sebenarnya
-    const targetDate = new Date('2026-07-30T18:00:00+07:00').getTime();
+    var TARGET_DATE_STRING = '2026-07-30T18:00:00+07:00';
 
-    const elDays    = document.getElementById('cdDays');
-    const elHours   = document.getElementById('cdHours');
-    const elMinutes = document.getElementById('cdMinutes');
-    const elSeconds = document.getElementById('cdSeconds');
+    function initSlide3Countdown(attemptsLeft) {
+        var elDays    = document.getElementById('cdDays');
+        var elHours   = document.getElementById('cdHours');
+        var elMinutes = document.getElementById('cdMinutes');
+        var elSeconds = document.getElementById('cdSeconds');
 
-    let prev = { d: null, h: null, m: null, s: null };
-
-    function pad(n) { return n.toString().padStart(2, '0'); }
-
-    function tickAnim(el, val, prevVal) {
-        if (val !== prevVal) {
-            el.classList.remove('tick');
-            void el.offsetWidth;
-            el.classList.add('tick');
-        }
-    }
-
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        if (distance <= 0) {
-            elDays.textContent = '00';
-            elHours.textContent = '00';
-            elMinutes.textContent = '00';
-            elSeconds.textContent = '00';
-            clearInterval(timer);
+        // Kalau elemen belum ada di DOM (mis. slide ini baru disisipkan belakangan
+        // lewat JS loader), coba lagi beberapa kali sebelum menyerah.
+        if (!elDays || !elHours || !elMinutes || !elSeconds) {
+            if (typeof attemptsLeft === 'undefined') attemptsLeft = 50; // ~5 detik @100ms
+            if (attemptsLeft > 0) {
+                setTimeout(function () { initSlide3Countdown(attemptsLeft - 1); }, 100);
+            }
             return;
         }
 
-        const days    = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // Cegah dua interval berjalan sekaligus kalau init terpanggil lebih dari sekali
+        if (window.__slide3CountdownTimer) {
+            clearInterval(window.__slide3CountdownTimer);
+        }
 
-        tickAnim(elDays, days, prev.d);
-        tickAnim(elHours, hours, prev.h);
-        tickAnim(elMinutes, minutes, prev.m);
-        tickAnim(elSeconds, seconds, prev.s);
+        var targetDate = new Date(TARGET_DATE_STRING).getTime();
+        var prev = { d: null, h: null, m: null, s: null };
 
-        elDays.textContent = pad(days);
-        elHours.textContent = pad(hours);
-        elMinutes.textContent = pad(minutes);
-        elSeconds.textContent = pad(seconds);
+        function pad(n) { return n.toString().padStart(2, '0'); }
 
-        prev = { d: days, h: hours, m: minutes, s: seconds };
+        function tickAnim(el, val, prevVal) {
+            if (val !== prevVal) {
+                el.classList.remove('tick');
+                void el.offsetWidth; // reflow, biar animasi bisa diulang
+                el.classList.add('tick');
+            }
+        }
+
+        function updateCountdown() {
+            var now = new Date().getTime();
+            var distance = targetDate - now;
+
+            if (distance <= 0) {
+                elDays.textContent = '00';
+                elHours.textContent = '00';
+                elMinutes.textContent = '00';
+                elSeconds.textContent = '00';
+                clearInterval(window.__slide3CountdownTimer);
+                return;
+            }
+
+            var days    = Math.floor(distance / 86400000);
+            var hours   = Math.floor((distance % 86400000) / 3600000);
+            var minutes = Math.floor((distance % 3600000) / 60000);
+            var seconds = Math.floor((distance % 60000) / 1000);
+
+            tickAnim(elDays, days, prev.d);
+            tickAnim(elHours, hours, prev.h);
+            tickAnim(elMinutes, minutes, prev.m);
+            tickAnim(elSeconds, seconds, prev.s);
+
+            elDays.textContent = pad(days);
+            elHours.textContent = pad(hours);
+            elMinutes.textContent = pad(minutes);
+            elSeconds.textContent = pad(seconds);
+
+            prev = { d: days, h: hours, m: minutes, s: seconds };
+        }
+
+        updateCountdown();
+        window.__slide3CountdownTimer = setInterval(updateCountdown, 1000);
     }
 
-    updateCountdown();
-    const timer = setInterval(updateCountdown, 1000);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { initSlide3Countdown(); });
+    } else {
+        initSlide3Countdown();
+    }
 })();
 </script>
