@@ -1,359 +1,391 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Undangan Ulang Tahun – Faelyn</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Dancing+Script:wght@500;600;700&family=Nunito:wght@300;400;600;700;800&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-<style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    /* scroll-behavior smooth dihapus: kecepatan scroll sekarang dikendalikan lewat JS (fastScrollTo) */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome – Birthday Faelyn 🎀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Dancing+Script:wght@500;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:wght@500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-        font-family: 'Lato', sans-serif;
-        scroll-snap-type: y mandatory;
-        overflow-y: scroll;
-        height: 100vh;
-        background: #fff0f5;
-    }
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
 
-    .slide {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('foto/utama.png') no-repeat center center / cover;
+            font-family: 'Lato', sans-serif;
+            /* Rasio potrait seperti background asli */
+        }
 
-    .scroll-hint {
-        position: absolute;
-        bottom: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        color: #fff;
-        font-family: 'Nunito', sans-serif;
-        font-size: 11px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        opacity: 0.85;
-        text-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        animation: bounceHint 1.6s ease-in-out infinite;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        pointer-events: none;
-    }
-    @keyframes bounceHint {
-        0%,100% { transform: translateX(-50%) translateY(0); }
-        50%      { transform: translateX(-50%) translateY(8px); }
-    }
+        /* ── Scene: mempertahankan rasio 9:16 background ── */
+        .scene {
+            position: relative;
+            width: min(100vw, calc(100vh * 9/16));
+            height: min(100vh, calc(100vw * 16/9));
+            max-width: 480px;
+            max-height: 100vh;
+        }
 
-    .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.8s ease, transform 0.8s ease;
-        transition-delay: var(--delay, 0s);
-    }
+        /* ── Konten tepat di dalam oval ──
+           Berdasarkan gambar 1.png:
+           - oval mulai ~13% dari atas, berakhir ~87%
+           - horizontal: ~10% – 90%
+           - center ≈ top 48%, left 50%
+           - tinggi oval ≈ 74% scene, lebar ≈ 80%
+        */
+        .oval-content {
+            position: absolute;
+            left: 50%;
+            top: 47%;
+            transform: translate(-50%, -50%);
+            width: 68%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 0;
+        }
 
-    .slide.in-view .reveal {
-        opacity: 1;
-        transform: translateY(0);
-    }
+        /* ── Label kecil ── */
+        .label-small {
+            font-family: 'Playfair Display', serif;
+            font-weight: 30;
+            font-style: normal;
+            font-size: clamp(20px, 10vw, 20px);
+            color: #c2185b;
+            line-height: 1.1;
+            filter: drop-shadow(0 2px 5px rgba(194,24,91,0.18));
+            animation: slideUp 0.9s 0.3s cubic-bezier(.22,1,.36,1) both;
+            margin-bottom: 3px;
+        }
 
-    /* ====== TOMBOL MUSIK MENGAMBANG ====== */
-    .music-toggle {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #e91e8c 0%, #f06292 60%);
-        border: none;
-        box-shadow: 0 4px 16px rgba(233,30,140,0.35);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 999;
-        transition: transform 0.2s;
-    }
-    .music-toggle:active { transform: scale(0.92); }
-    .music-toggle svg {
-        width: 20px;
-        height: 20px;
-        fill: #fff;
-    }
-    .music-toggle.playing svg.icon-note { display: none; }
-    .music-toggle:not(.playing) svg.icon-bars { display: none; }
+        /* ── Angka 1st ── */
+        .number {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: clamp(72px, 20vw, 110px);
+            line-height: 0.95;
+            background: linear-gradient(150deg, #e91e8c 10%, #f48fb1 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 3px 8px rgba(233,30,140,0.22));
+            animation: popIn 0.9s 0.1s cubic-bezier(.22,1,.36,1) both;
+        }
 
-    .music-toggle.playing {
-        animation: pulseMusic 1.6s ease-in-out infinite;
-    }
-    @keyframes pulseMusic {
-        0%,100% { box-shadow: 0 4px 16px rgba(233,30,140,0.35); }
-        50%      { box-shadow: 0 4px 22px rgba(233,30,140,0.6); }
-    }
+        /* ── Bintang kecil di kiri kanan angka ── */
+        .number-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        .num-star {
+            position: absolute;
+            font-size: clamp(10px, 2.5vw, 16px);
+            animation: floatStar 2.8s ease-in-out infinite;
+            color: #D4AF37;
+        }
+        .num-star.left  { top: 10%; left: -22px; animation-delay: 0s; }
+        .num-star.right { top: 5%;  right: -18px; animation-delay: 0.9s; }
 
-    @media (prefers-reduced-motion: reduce) {
-        .music-toggle.playing { animation: none; }
-        html { scroll-behavior: auto; }
-    }
+        @keyframes floatStar {
+            0%,100% { transform: translateY(0) rotate(-10deg); opacity:0.7; }
+            50%      { transform: translateY(-6px) rotate(10deg); opacity:1; }
+        }
 
-    /* Indikator loading sederhana selagi slide dimuat */
-    .slide-loading {
-        color: #d63384;
-        font-family: 'Nunito', sans-serif;
-        font-size: 14px;
-        letter-spacing: 1px;
-        opacity: 0.6;
-    }
-</style>
+        @keyframes popIn {
+            from { opacity:0; transform:scale(0.7); }
+            to   { opacity:1; transform:scale(1); }
+        }
+
+        /* ── Ornamen garis ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 6px 0 8px;
+            width: 100%;
+            justify-content: center;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            max-width: 44px;
+            height: 1.5px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, transparent, #f48fb1cc);
+        }
+        .divider::after {
+            background: linear-gradient(90deg, #f48fb1cc, transparent);
+        }
+        .divider-icon {
+            font-size: clamp(11px, 2.5vw, 15px);
+            color: #e91e8c;
+            animation: spin 6s linear infinite;
+        }
+        /* ── Kupu-kupu melayang ── */
+        .butterfly {
+            position: absolute;
+            pointer-events: none;
+            width: clamp(18px, 4.5vw, 28px);
+            height: clamp(18px, 4.5vw, 28px);
+            opacity: 0.85;
+            animation: flutterFloat var(--fd, 6s) ease-in-out infinite var(--fdl, 0s);
+            z-index: 5;
+        }
+        .butterfly svg { width: 100%; height: 100%; display:block; }
+        .butterfly .wing {
+            transform-origin: center;
+            animation: wingFlap 0.45s ease-in-out infinite alternate;
+        }
+        .butterfly .wing-left { animation-delay: 0s; }
+        .butterfly .wing-right { animation-delay: 0.05s; }
+
+        @keyframes wingFlap {
+            from { transform: scaleX(1); }
+            to   { transform: scaleX(0.55); }
+        }
+
+        @keyframes flutterFloat {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            25%  { transform: translate(8px, -14px) rotate(6deg); }
+            50%  { transform: translate(-4px, -26px) rotate(-4deg); }
+            75%  { transform: translate(-10px, -12px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .butterfly, .butterfly .wing { animation: none; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        /* ── Nama ── */
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 30;
+            font-style: normal;
+            font-size: clamp(20px, 10vw, 20px);
+            color: #c2185b;
+            line-height: 1.1;
+            filter: drop-shadow(0 2px 5px rgba(194,24,91,0.18));
+            animation: slideUp 0.9s 0.3s cubic-bezier(.22,1,.36,1) both;
+        }
+
+        @keyframes slideUp {
+            from { opacity:0; transform:translateY(14px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* ── Subtitle ── */
+        .subtitle {
+            margin-top: 6px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 300;
+            font-size: clamp(9px, 2.2vw, 12px);
+            letter-spacing: 2.5px;
+            color: #c06090;
+            opacity: 0.75;
+            animation: slideUp 0.9s 0.45s cubic-bezier(.22,1,.36,1) both;
+        }
+
+        /* ── Tombol ── */
+        .button-wrap {
+            margin-top: clamp(14px, 4vw, 22px);
+            animation: slideUp 0.9s 0.55s cubic-bezier(.22,1,.36,1) both;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: clamp(10px,2.5vw,14px) clamp(20px,5vw,32px);
+            background: linear-gradient(135deg, #e91e8c 0%, #f06292 60%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            font-size: clamp(11px, 2.8vw, 14px);
+            letter-spacing: 1.5px;
+            box-shadow:
+                0 5px 22px rgba(233,30,140,0.38),
+                0 1px 6px rgba(212,175,55,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.25);
+            transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg);
+            animation: shimmer 3s 1.5s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%   { left: -75%; }
+            60%, 100% { left: 140%; }
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 30px rgba(233,30,140,0.45);
+            filter: brightness(1.07);
+        }
+        .button:active { transform: translateY(0); }
+
+        /* ── Note bawah ── */
+        .footer-note {
+            margin-top: 8px;
+            font-size: clamp(9px, 2vw, 11px);
+            color: #e91e8c;
+            opacity: 0.5;
+            letter-spacing: 1px;
+            font-family: 'Nunito', sans-serif;
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity: 0.4; }
+            50%      { opacity: 0.75; }
+        }
+
+        /* ── Sparkle melayang di oval ── */
+        .sparkle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: twinkle var(--d, 3s) ease-in-out infinite var(--dl, 0s);
+        }
+        @keyframes twinkle {
+            0%,100% { opacity:0; transform: scale(0.5) translateY(0); }
+            50%      { opacity:0.8; transform: scale(1.3) translateY(-5px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .number, .name, .subtitle, .button-wrap, .sparkle,
+            .num-star, .divider-icon, .button::after, .footer-note
+            { animation: none; opacity: 1; }
+        }
+    </style>
 </head>
 <body>
+<div class="scene" id="scene">
 
-    <audio id="bgMusic" src="lagu/birthday.mp3" loop preload="auto" playsinline></audio>
+    <div class="oval-content">
 
-    <button class="music-toggle" id="musicToggle" aria-label="Putar atau jeda musik">
-        <svg class="icon-note" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
-        <svg class="icon-bars" viewBox="0 0 24 24"><rect x="4" y="10" width="3" height="8"><animate attributeName="height" values="8;16;8" dur="0.8s" repeatCount="indefinite"/><animate attributeName="y" values="10;6;10" dur="0.8s" repeatCount="indefinite"/></rect><rect x="10.5" y="6" width="3" height="14"><animate attributeName="height" values="14;20;14" dur="0.9s" repeatCount="indefinite"/><animate attributeName="y" values="6;3;6" dur="0.9s" repeatCount="indefinite"/></rect><rect x="17" y="10" width="3" height="8"><animate attributeName="height" values="8;16;8" dur="0.7s" repeatCount="indefinite"/><animate attributeName="y" values="10;6;10" dur="0.7s" repeatCount="indefinite"/></rect></svg>
-    </button>
+        <p class="label-small">Happy Birthday</p>
 
-    <!-- Setiap section punya data-src yang menunjuk ke file HTML slide.
-         Isinya akan dimuat lewat fetch() saat halaman siap (menggantikan <?php include ?>). -->
-    <section id="slide1" class="slide" data-src="slide1.html">
-        <div class="slide-loading">memuat...</div>
-        <div class="scroll-hint">↓ Scroll ↓</div>
-    </section>
+        <div class="number-wrap">
+            <span class="num-star left">✦</span>
+            <div class="number">1<sup style="font-size:0.38em;vertical-align:super;line-height:0">st</sup></div>
+            <span class="num-star right">✦</span>
+        </div>
 
-    <section id="slide2" class="slide" data-src="slide2.html">
-        <div class="slide-loading">memuat...</div>
-    </section>
+        <div class="divider">
+            <span class="divider-icon">✿</span>
+        </div>
 
-    <section id="slide3" class="slide" data-src="slide3.html">
-        <div class="slide-loading">memuat...</div>
-    </section>
+        <h1 class="name">Fidela Faelynn Fedriek</h1>
+        <p class="subtitle">Undangan Perayaan Ulang Tahun</p>
 
-    <section id="slide4" class="slide" data-src="slide4.html">
-        <div class="slide-loading">memuat...</div>
-    </section>
+        <div class="button-wrap">
+            <a href="undangan.html" class="button">
+                <!-- Amplop icon -->
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                Buka Undangan
+            </a>
+        </div>
+    </div>
 
-    <section id="slide5" class="slide" data-src="slide5.html">
-        <div class="slide-loading">memuat...</div>
-    </section>
+    <!-- Kupu-kupu melayang -->
+    <div class="butterfly" style="top:10%; left:8%; --fd:5.5s; --fdl:0s;">
+        <svg viewBox="0 0 32 32">
+            <g class="wing wing-left">
+                <path d="M16 16 C8 4, 0 6, 2 14 C3 20, 10 20, 16 16 Z" fill="#f06292"/>
+            </g>
+            <g class="wing wing-right">
+                <path d="M16 16 C24 4, 32 6, 30 14 C29 20, 22 20, 16 16 Z" fill="#f48fb1"/>
+            </g>
+            <g class="wing wing-left">
+                <path d="M16 16 C10 22, 4 24, 6 28 C9 31, 14 26, 16 16 Z" fill="#e91e8c" opacity="0.85"/>
+            </g>
+            <g class="wing wing-right">
+                <path d="M16 16 C22 22, 28 24, 26 28 C23 31, 18 26, 16 16 Z" fill="#f06292" opacity="0.85"/>
+            </g>
+            <line x1="16" y1="10" x2="16" y2="24" stroke="#c2185b" stroke-width="1.5"/>
+        </svg>
+    </div>
+
+    <div class="butterfly" style="top:20%; right:10%; --fd:6.8s; --fdl:1.2s;">
+        <svg viewBox="0 0 32 32">
+            <g class="wing wing-left"><path d="M16 16 C8 4, 0 6, 2 14 C3 20, 10 20, 16 16 Z" fill="#D4AF37"/></g>
+            <g class="wing wing-right"><path d="M16 16 C24 4, 32 6, 30 14 C29 20, 22 20, 16 16 Z" fill="#f48fb1"/></g>
+            <g class="wing wing-left"><path d="M16 16 C10 22, 4 24, 6 28 C9 31, 14 26, 16 16 Z" fill="#e91e8c" opacity="0.85"/></g>
+            <g class="wing wing-right"><path d="M16 16 C22 22, 28 24, 26 28 C23 31, 18 26, 16 16 Z" fill="#f06292" opacity="0.85"/></g>
+            <line x1="16" y1="10" x2="16" y2="24" stroke="#c2185b" stroke-width="1.5"/>
+        </svg>
+    </div>
+
+    <div class="butterfly" style="bottom:14%; left:12%; --fd:7.2s; --fdl:0.6s;">
+        <svg viewBox="0 0 32 32">
+            <g class="wing wing-left"><path d="M16 16 C8 4, 0 6, 2 14 C3 20, 10 20, 16 16 Z" fill="#f48fb1"/></g>
+            <g class="wing wing-right"><path d="M16 16 C24 4, 32 6, 30 14 C29 20, 22 20, 16 16 Z" fill="#e91e8c"/></g>
+            <g class="wing wing-left"><path d="M16 16 C10 22, 4 24, 6 28 C9 31, 14 26, 16 16 Z" fill="#f06292" opacity="0.85"/></g>
+            <g class="wing wing-right"><path d="M16 16 C22 22, 28 24, 26 28 C23 31, 18 26, 16 16 Z" fill="#D4AF37" opacity="0.85"/></g>
+            <line x1="16" y1="10" x2="16" y2="24" stroke="#c2185b" stroke-width="1.5"/>
+        </svg>
+    </div>
+
+    <div class="butterfly" style="bottom:8%; right:14%; --fd:5.9s; --fdl:1.8s;">
+        <svg viewBox="0 0 32 32">
+            <g class="wing wing-left"><path d="M16 16 C8 4, 0 6, 2 14 C3 20, 10 20, 16 16 Z" fill="#e91e8c"/></g>
+            <g class="wing wing-right"><path d="M16 16 C24 4, 32 6, 30 14 C29 20, 22 20, 16 16 Z" fill="#f06292"/></g>
+            <g class="wing wing-left"><path d="M16 16 C10 22, 4 24, 6 28 C9 31, 14 26, 16 16 Z" fill="#f48fb1" opacity="0.85"/></g>
+            <g class="wing wing-right"><path d="M16 16 C22 22, 28 24, 26 28 C23 31, 18 26, 16 16 Z" fill="#e91e8c" opacity="0.85"/></g>
+            <line x1="16" y1="10" x2="16" y2="24" stroke="#c2185b" stroke-width="1.5"/>
+        </svg>
+    </div>
+
+</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const lastIndex = slides.length - 1;
-
-    // ====== MEMUAT KONTEN SLIDE VIA FETCH (pengganti <?php include ?>) ======
-    // Catatan: fetch() butuh dijalankan lewat server lokal (Live Server / php -S / python -m http.server),
-    // tidak bisa dibuka langsung dengan cara double-click file (protokol file://) karena CORS.
-    function loadSlideContent(section) {
-        const src = section.getAttribute('data-src');
-        if (!src) return Promise.resolve();
-
-        return fetch(src)
-            .then(res => {
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                return res.text();
-            })
-            .then(html => {
-                const loadingEl = section.querySelector('.slide-loading');
-                if (loadingEl) loadingEl.remove();
-                // Sisipkan di awal supaya elemen lain yang sudah ada (mis. .scroll-hint) tetap di bawahnya
-                section.insertAdjacentHTML('afterbegin', html);
-            })
-            .catch(err => {
-                console.error('Gagal memuat slide:', src, err);
-                const loadingEl = section.querySelector('.slide-loading');
-                if (loadingEl) loadingEl.textContent = 'Gagal memuat ' + src;
-            });
-    }
-
-    const loadAllSlides = Promise.all(slides.map(loadSlideContent));
-
-    // ====== REVEAL ANIMATION (tetap pakai IntersectionObserver, ini aman) ======
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            entry.target.classList.toggle('in-view', entry.isIntersecting);
-        });
-    }, { threshold: 0.4 });
-    slides.forEach(slide => revealObserver.observe(slide));
-
-    // ====== HITUNG SLIDE AKTIF LANGSUNG DARI POSISI SCROLL ======
-    // Lebih akurat & tidak bergantung pada timing IntersectionObserver.
-    function getCurrentIndex() {
-        let closest = 0;
-        let closestDist = Infinity;
-        slides.forEach((slide, i) => {
-            const dist = Math.abs(slide.offsetTop - window.scrollY);
-            if (dist < closestDist) {
-                closestDist = dist;
-                closest = i;
-            }
-        });
-        return closest;
-    }
-
-    // ====== SCROLL CUSTOM DENGAN DURASI TETAP (CEPAT) ======
-    // behavior:'smooth' bawaan browser durasinya tidak bisa diatur & sering lambat,
-    // jadi kita buat animasi sendiri supaya konsisten & cepat.
-    const SCROLL_DURATION = 500; // ms, ubah angka ini kalau mau lebih cepat/lambat
-
-    function easeInOutQuad(t) {
-        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-    }
-
-    function fastScrollTo(targetY) {
-        const startY = window.scrollY;
-        const diff = targetY - startY;
-        const startTime = performance.now();
-
-        function step(now) {
-            const elapsed = now - startTime;
-            const t = Math.min(elapsed / SCROLL_DURATION, 1);
-            window.scrollTo(0, startY + diff * easeInOutQuad(t));
-            if (t < 1) {
-                requestAnimationFrame(step);
-            }
-        }
-        requestAnimationFrame(step);
-    }
-
-    // ====== AUTO-SCROLL HALUS ANTAR SLIDE ======
-    const AUTO_SCROLL_DELAY   = 4500; // jeda antar slide (ms)
-    const RESUME_AFTER_MANUAL = 6000; // jeda sebelum lanjut auto-scroll setelah user scroll manual (ms)
-    let autoScrollTimer  = null;
-    let resumeTimer      = null;
-    let autoScrollPaused = false;
-    let isProgrammaticScroll = false;
-
-    function goToNextSlide() {
-        const idx = getCurrentIndex();
-        if (idx >= lastIndex) {
-            stopAutoScroll();
-            return;
-        }
-        const next = slides[idx + 1];
-        isProgrammaticScroll = true;
-        fastScrollTo(next.offsetTop);
-        // lepaskan flag setelah animasi selesai
-        window.clearTimeout(goToNextSlide._unlockTimer);
-        goToNextSlide._unlockTimer = window.setTimeout(() => {
-            isProgrammaticScroll = false;
-        }, SCROLL_DURATION + 100);
-    }
-
-    function startAutoScroll() {
-        stopAutoScroll();
-        if (autoScrollPaused) return;
-        autoScrollTimer = setInterval(goToNextSlide, AUTO_SCROLL_DELAY);
-    }
-
-    function stopAutoScroll() {
-        if (autoScrollTimer) {
-            clearInterval(autoScrollTimer);
-            autoScrollTimer = null;
-        }
-    }
-
-    function pauseAutoScrollTemporarily() {
-        // abaikan event scroll yang dipicu oleh scrollTo() kita sendiri
-        if (isProgrammaticScroll) return;
-
-        autoScrollPaused = true;
-        stopAutoScroll();
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(() => {
-            autoScrollPaused = false;
-            if (getCurrentIndex() < lastIndex) {
-                startAutoScroll();
-            }
-        }, RESUME_AFTER_MANUAL);
-    }
-
-    // Deteksi interaksi scroll manual dari user -> jeda auto-scroll sebentar
-    ['wheel', 'touchmove', 'keydown'].forEach(ev => {
-        window.addEventListener(ev, pauseAutoScrollTemporarily, { passive: true });
+    // Sparkle di dalam oval
+    const scene = document.getElementById('scene');
+    const pos = [
+        {t:'15%',l:'18%',s:5,c:'#f48fb1'},
+        {t:'18%',l:'75%',s:4,c:'#D4AF37'},
+        {t:'28%',l:'12%',s:6,c:'#fff'},
+        {t:'25%',l:'82%',s:5,c:'#f48fb1'},
+        {t:'70%',l:'14%',s:4,c:'#D4AF37'},
+        {t:'72%',l:'80%',s:5,c:'#fff'},
+        {t:'82%',l:'30%',s:4,c:'#f48fb1'},
+        {t:'80%',l:'65%',s:6,c:'#D4AF37'},
+    ];
+    pos.forEach((p,i) => {
+        const el = document.createElement('div');
+        el.className = 'sparkle';
+        el.style.cssText = `top:${p.t};left:${p.l};width:${p.s}px;height:${p.s}px;background:${p.c};--d:${2.2+Math.random()*2.5}s;--dl:${i*0.38}s`;
+        scene.appendChild(el);
     });
-
-    // Tunggu semua slide selesai dimuat sebelum mulai auto-scroll,
-    // supaya tidak "loncat" saat konten baru masuk mengubah tampilan.
-    loadAllSlides.finally(() => {
-        startAutoScroll();
-    });
-
-    // ====== MUSIK OTOMATIS TANPA PERLU KLIK TOMBOL ======
-    const music = document.getElementById('bgMusic');
-    const toggleBtn = document.getElementById('musicToggle');
-    music.volume = 0.55;
-    let unlocked = false;
-
-    function setPlayingUI(isPlaying) {
-        toggleBtn.classList.toggle('playing', isPlaying);
-    }
-
-    function tryUnmutedPlay() {
-        const p = music.play();
-        if (p !== undefined) {
-            p.then(() => {
-                unlocked = true;
-                setPlayingUI(true);
-            }).catch(() => {
-                tryMutedPlay();
-            });
-        }
-    }
-
-    function tryMutedPlay() {
-        music.muted = true;
-        const p = music.play();
-        if (p !== undefined) {
-            p.then(() => {
-                setPlayingUI(true);
-                armAutoUnmute();
-            }).catch(() => {
-                setPlayingUI(false);
-            });
-        }
-    }
-
-    function armAutoUnmute() {
-        const unmute = () => {
-            if (unlocked) return;
-            unlocked = true;
-            music.muted = false;
-            if (music.paused) music.play().catch(() => {});
-            events.forEach(ev => window.removeEventListener(ev, unmute));
-        };
-        const events = ['scroll', 'touchstart', 'click', 'keydown', 'wheel'];
-        events.forEach(ev => window.addEventListener(ev, unmute, { passive: true, once: false }));
-    }
-
-    tryUnmutedPlay();
-
-    toggleBtn.addEventListener('click', function () {
-        unlocked = true;
-        music.muted = false;
-        if (music.paused) {
-            music.play().then(() => setPlayingUI(true)).catch(() => {});
-        } else {
-            music.pause();
-            setPlayingUI(false);
-        }
-    });
-});
 </script>
-
 </body>
 </html>

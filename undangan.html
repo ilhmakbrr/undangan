@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undangan Ulang Tahun – Faelyn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Dancing+Script:wght@500;600;700&family=Nunito:wght@300;400;600;700;800&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* scroll-behavior smooth dihapus: kecepatan scroll sekarang dikendalikan lewat JS (fastScrollTo) */
+
+    body {
+        font-family: 'Lato', sans-serif;
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        height: 100vh;
+        background: #fff0f5;
+    }
+
+    .slide {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .scroll-hint {
+        position: absolute;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        color: #fff;
+        font-family: 'Nunito', sans-serif;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        opacity: 0.85;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        animation: bounceHint 1.6s ease-in-out infinite;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        pointer-events: none;
+    }
+    @keyframes bounceHint {
+        0%,100% { transform: translateX(-50%) translateY(0); }
+        50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        transition-delay: var(--delay, 0s);
+    }
+
+    .slide.in-view .reveal {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* ====== TOMBOL MUSIK MENGAMBANG ====== */
+    .music-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e91e8c 0%, #f06292 60%);
+        border: none;
+        box-shadow: 0 4px 16px rgba(233,30,140,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 999;
+        transition: transform 0.2s;
+    }
+    .music-toggle:active { transform: scale(0.92); }
+    .music-toggle svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+    }
+    .music-toggle.playing svg.icon-note { display: none; }
+    .music-toggle:not(.playing) svg.icon-bars { display: none; }
+
+    .music-toggle.playing {
+        animation: pulseMusic 1.6s ease-in-out infinite;
+    }
+    @keyframes pulseMusic {
+        0%,100% { box-shadow: 0 4px 16px rgba(233,30,140,0.35); }
+        50%      { box-shadow: 0 4px 22px rgba(233,30,140,0.6); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .music-toggle.playing { animation: none; }
+        html { scroll-behavior: auto; }
+    }
+
+    /* Indikator loading sederhana selagi slide dimuat */
+    .slide-loading {
+        color: #d63384;
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+        letter-spacing: 1px;
+        opacity: 0.6;
+    }
+</style>
+</head>
+<body>
+
+    <audio id="bgMusic" src="lagu/birthday.mp3" loop preload="auto" playsinline></audio>
+
+    <button class="music-toggle" id="musicToggle" aria-label="Putar atau jeda musik">
+        <svg class="icon-note" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+        <svg class="icon-bars" viewBox="0 0 24 24"><rect x="4" y="10" width="3" height="8"><animate attributeName="height" values="8;16;8" dur="0.8s" repeatCount="indefinite"/><animate attributeName="y" values="10;6;10" dur="0.8s" repeatCount="indefinite"/></rect><rect x="10.5" y="6" width="3" height="14"><animate attributeName="height" values="14;20;14" dur="0.9s" repeatCount="indefinite"/><animate attributeName="y" values="6;3;6" dur="0.9s" repeatCount="indefinite"/></rect><rect x="17" y="10" width="3" height="8"><animate attributeName="height" values="8;16;8" dur="0.7s" repeatCount="indefinite"/><animate attributeName="y" values="10;6;10" dur="0.7s" repeatCount="indefinite"/></rect></svg>
+    </button>
+
+    <!-- Setiap section punya data-src yang menunjuk ke file HTML slide.
+         Isinya akan dimuat lewat fetch() saat halaman siap (menggantikan <?php include ?>). -->
+    <section id="slide1" class="slide" data-src="slide1.html">
+        <div class="slide-loading">memuat...</div>
+        <div class="scroll-hint">↓ Scroll ↓</div>
+    </section>
+
+    <section id="slide2" class="slide" data-src="slide2.html">
+        <div class="slide-loading">memuat...</div>
+    </section>
+
+    <section id="slide3" class="slide" data-src="slide3.html">
+        <div class="slide-loading">memuat...</div>
+    </section>
+
+    <section id="slide4" class="slide" data-src="slide4.html">
+        <div class="slide-loading">memuat...</div>
+    </section>
+
+    <section id="slide5" class="slide" data-src="slide5.html">
+        <div class="slide-loading">memuat...</div>
+    </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const lastIndex = slides.length - 1;
+
+    // ====== MEMUAT KONTEN SLIDE VIA FETCH (pengganti <?php include ?>) ======
+    // Catatan: fetch() butuh dijalankan lewat server lokal (Live Server / php -S / python -m http.server),
+    // tidak bisa dibuka langsung dengan cara double-click file (protokol file://) karena CORS.
+    function loadSlideContent(section) {
+        const src = section.getAttribute('data-src');
+        if (!src) return Promise.resolve();
+
+        return fetch(src)
+            .then(res => {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.text();
+            })
+            .then(html => {
+                const loadingEl = section.querySelector('.slide-loading');
+                if (loadingEl) loadingEl.remove();
+                // Sisipkan di awal supaya elemen lain yang sudah ada (mis. .scroll-hint) tetap di bawahnya
+                section.insertAdjacentHTML('afterbegin', html);
+            })
+            .catch(err => {
+                console.error('Gagal memuat slide:', src, err);
+                const loadingEl = section.querySelector('.slide-loading');
+                if (loadingEl) loadingEl.textContent = 'Gagal memuat ' + src;
+            });
+    }
+
+    const loadAllSlides = Promise.all(slides.map(loadSlideContent));
+
+    // ====== REVEAL ANIMATION (tetap pakai IntersectionObserver, ini aman) ======
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            entry.target.classList.toggle('in-view', entry.isIntersecting);
+        });
+    }, { threshold: 0.4 });
+    slides.forEach(slide => revealObserver.observe(slide));
+
+    // ====== HITUNG SLIDE AKTIF LANGSUNG DARI POSISI SCROLL ======
+    // Lebih akurat & tidak bergantung pada timing IntersectionObserver.
+    function getCurrentIndex() {
+        let closest = 0;
+        let closestDist = Infinity;
+        slides.forEach((slide, i) => {
+            const dist = Math.abs(slide.offsetTop - window.scrollY);
+            if (dist < closestDist) {
+                closestDist = dist;
+                closest = i;
+            }
+        });
+        return closest;
+    }
+
+    // ====== SCROLL CUSTOM DENGAN DURASI TETAP (CEPAT) ======
+    // behavior:'smooth' bawaan browser durasinya tidak bisa diatur & sering lambat,
+    // jadi kita buat animasi sendiri supaya konsisten & cepat.
+    const SCROLL_DURATION = 500; // ms, ubah angka ini kalau mau lebih cepat/lambat
+
+    function easeInOutQuad(t) {
+        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    function fastScrollTo(targetY) {
+        const startY = window.scrollY;
+        const diff = targetY - startY;
+        const startTime = performance.now();
+
+        function step(now) {
+            const elapsed = now - startTime;
+            const t = Math.min(elapsed / SCROLL_DURATION, 1);
+            window.scrollTo(0, startY + diff * easeInOutQuad(t));
+            if (t < 1) {
+                requestAnimationFrame(step);
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    // ====== AUTO-SCROLL HALUS ANTAR SLIDE ======
+    const AUTO_SCROLL_DELAY   = 4500; // jeda antar slide (ms)
+    const RESUME_AFTER_MANUAL = 6000; // jeda sebelum lanjut auto-scroll setelah user scroll manual (ms)
+    let autoScrollTimer  = null;
+    let resumeTimer      = null;
+    let autoScrollPaused = false;
+    let isProgrammaticScroll = false;
+
+    function goToNextSlide() {
+        const idx = getCurrentIndex();
+        if (idx >= lastIndex) {
+            stopAutoScroll();
+            return;
+        }
+        const next = slides[idx + 1];
+        isProgrammaticScroll = true;
+        fastScrollTo(next.offsetTop);
+        // lepaskan flag setelah animasi selesai
+        window.clearTimeout(goToNextSlide._unlockTimer);
+        goToNextSlide._unlockTimer = window.setTimeout(() => {
+            isProgrammaticScroll = false;
+        }, SCROLL_DURATION + 100);
+    }
+
+    function startAutoScroll() {
+        stopAutoScroll();
+        if (autoScrollPaused) return;
+        autoScrollTimer = setInterval(goToNextSlide, AUTO_SCROLL_DELAY);
+    }
+
+    function stopAutoScroll() {
+        if (autoScrollTimer) {
+            clearInterval(autoScrollTimer);
+            autoScrollTimer = null;
+        }
+    }
+
+    function pauseAutoScrollTemporarily() {
+        // abaikan event scroll yang dipicu oleh scrollTo() kita sendiri
+        if (isProgrammaticScroll) return;
+
+        autoScrollPaused = true;
+        stopAutoScroll();
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => {
+            autoScrollPaused = false;
+            if (getCurrentIndex() < lastIndex) {
+                startAutoScroll();
+            }
+        }, RESUME_AFTER_MANUAL);
+    }
+
+    // Deteksi interaksi scroll manual dari user -> jeda auto-scroll sebentar
+    ['wheel', 'touchmove', 'keydown'].forEach(ev => {
+        window.addEventListener(ev, pauseAutoScrollTemporarily, { passive: true });
+    });
+
+    // Tunggu semua slide selesai dimuat sebelum mulai auto-scroll,
+    // supaya tidak "loncat" saat konten baru masuk mengubah tampilan.
+    loadAllSlides.finally(() => {
+        startAutoScroll();
+    });
+
+    // ====== MUSIK OTOMATIS TANPA PERLU KLIK TOMBOL ======
+    const music = document.getElementById('bgMusic');
+    const toggleBtn = document.getElementById('musicToggle');
+    music.volume = 0.55;
+    let unlocked = false;
+
+    function setPlayingUI(isPlaying) {
+        toggleBtn.classList.toggle('playing', isPlaying);
+    }
+
+    function tryUnmutedPlay() {
+        const p = music.play();
+        if (p !== undefined) {
+            p.then(() => {
+                unlocked = true;
+                setPlayingUI(true);
+            }).catch(() => {
+                tryMutedPlay();
+            });
+        }
+    }
+
+    function tryMutedPlay() {
+        music.muted = true;
+        const p = music.play();
+        if (p !== undefined) {
+            p.then(() => {
+                setPlayingUI(true);
+                armAutoUnmute();
+            }).catch(() => {
+                setPlayingUI(false);
+            });
+        }
+    }
+
+    function armAutoUnmute() {
+        const unmute = () => {
+            if (unlocked) return;
+            unlocked = true;
+            music.muted = false;
+            if (music.paused) music.play().catch(() => {});
+            events.forEach(ev => window.removeEventListener(ev, unmute));
+        };
+        const events = ['scroll', 'touchstart', 'click', 'keydown', 'wheel'];
+        events.forEach(ev => window.addEventListener(ev, unmute, { passive: true, once: false }));
+    }
+
+    tryUnmutedPlay();
+
+    toggleBtn.addEventListener('click', function () {
+        unlocked = true;
+        music.muted = false;
+        if (music.paused) {
+            music.play().then(() => setPlayingUI(true)).catch(() => {});
+        } else {
+            music.pause();
+            setPlayingUI(false);
+        }
+    });
+});
+</script>
+
+</body>
+</html>
