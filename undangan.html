@@ -172,6 +172,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (loadingEl) loadingEl.remove();
                 // Sisipkan di awal supaya elemen lain yang sudah ada (mis. .scroll-hint) tetap di bawahnya
                 section.insertAdjacentHTML('afterbegin', html);
+
+                // PENTING: browser TIDAK menjalankan tag <script> yang disisipkan
+                // lewat innerHTML/insertAdjacentHTML. Harus dibuat ulang secara manual
+                // supaya script di dalam slide (mis. countdown di slide3.html) benar-benar jalan.
+                Array.from(section.querySelectorAll('script')).forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    for (const attr of oldScript.attributes) {
+                        newScript.setAttribute(attr.name, attr.value);
+                    }
+                    if (oldScript.src) {
+                        newScript.src = oldScript.src;
+                    } else {
+                        newScript.textContent = oldScript.textContent;
+                    }
+                    oldScript.replaceWith(newScript);
+                });
             })
             .catch(err => {
                 console.error('Gagal memuat slide:', src, err);
