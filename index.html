@@ -107,6 +107,15 @@
         .music-toggle.playing { animation: none; }
         html { scroll-behavior: auto; }
     }
+
+    /* Indikator loading sederhana selagi slide dimuat */
+    .slide-loading {
+        color: #d63384;
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+        letter-spacing: 1px;
+        opacity: 0.6;
+    }
 </style>
 </head>
 <body>
@@ -118,31 +127,60 @@
         <svg class="icon-bars" viewBox="0 0 24 24"><rect x="4" y="10" width="3" height="8"><animate attributeName="height" values="8;16;8" dur="0.8s" repeatCount="indefinite"/><animate attributeName="y" values="10;6;10" dur="0.8s" repeatCount="indefinite"/></rect><rect x="10.5" y="6" width="3" height="14"><animate attributeName="height" values="14;20;14" dur="0.9s" repeatCount="indefinite"/><animate attributeName="y" values="6;3;6" dur="0.9s" repeatCount="indefinite"/></rect><rect x="17" y="10" width="3" height="8"><animate attributeName="height" values="8;16;8" dur="0.7s" repeatCount="indefinite"/><animate attributeName="y" values="10;6;10" dur="0.7s" repeatCount="indefinite"/></rect></svg>
     </button>
 
-    <section id="slide1" class="slide">
-        <?php include 'slide1.php'; ?>
+    <!-- Setiap section punya data-src yang menunjuk ke file HTML slide.
+         Isinya akan dimuat lewat fetch() saat halaman siap (menggantikan <?php include ?>). -->
+    <section id="slide1" class="slide" data-src="slide1.html">
+        <div class="slide-loading">memuat...</div>
         <div class="scroll-hint">↓ Scroll ↓</div>
     </section>
 
-    <section id="slide2" class="slide">
-        <?php include 'slide2.php'; ?>
+    <section id="slide2" class="slide" data-src="slide2.html">
+        <div class="slide-loading">memuat...</div>
     </section>
 
-    <section id="slide3" class="slide">
-        <?php include 'slide3.php'; ?>
+    <section id="slide3" class="slide" data-src="slide3.html">
+        <div class="slide-loading">memuat...</div>
     </section>
 
-    <section id="slide4" class="slide">
-        <?php include 'slide4.php'; ?>
+    <section id="slide4" class="slide" data-src="slide4.html">
+        <div class="slide-loading">memuat...</div>
     </section>
 
-    <section id="slide5" class="slide">
-        <?php include 'slide5.php'; ?>
+    <section id="slide5" class="slide" data-src="slide5.html">
+        <div class="slide-loading">memuat...</div>
     </section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const slides = Array.from(document.querySelectorAll('.slide'));
     const lastIndex = slides.length - 1;
+
+    // ====== MEMUAT KONTEN SLIDE VIA FETCH (pengganti <?php include ?>) ======
+    // Catatan: fetch() butuh dijalankan lewat server lokal (Live Server / php -S / python -m http.server),
+    // tidak bisa dibuka langsung dengan cara double-click file (protokol file://) karena CORS.
+    function loadSlideContent(section) {
+        const src = section.getAttribute('data-src');
+        if (!src) return Promise.resolve();
+
+        return fetch(src)
+            .then(res => {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.text();
+            })
+            .then(html => {
+                const loadingEl = section.querySelector('.slide-loading');
+                if (loadingEl) loadingEl.remove();
+                // Sisipkan di awal supaya elemen lain yang sudah ada (mis. .scroll-hint) tetap di bawahnya
+                section.insertAdjacentHTML('afterbegin', html);
+            })
+            .catch(err => {
+                console.error('Gagal memuat slide:', src, err);
+                const loadingEl = section.querySelector('.slide-loading');
+                if (loadingEl) loadingEl.textContent = 'Gagal memuat ' + src;
+            });
+    }
+
+    const loadAllSlides = Promise.all(slides.map(loadSlideContent));
 
     // ====== REVEAL ANIMATION (tetap pakai IntersectionObserver, ini aman) ======
     const revealObserver = new IntersectionObserver((entries) => {
@@ -249,7 +287,11 @@ document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener(ev, pauseAutoScrollTemporarily, { passive: true });
     });
 
-    startAutoScroll();
+    // Tunggu semua slide selesai dimuat sebelum mulai auto-scroll,
+    // supaya tidak "loncat" saat konten baru masuk mengubah tampilan.
+    loadAllSlides.finally(() => {
+        startAutoScroll();
+    });
 
     // ====== MUSIK OTOMATIS TANPA PERLU KLIK TOMBOL ======
     const music = document.getElementById('bgMusic');
